@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --terra:#B5593A; --oliva:#6E7A45; --tostado:#4A3828;
+      --dorado:#C4A070; --arena:#F0EAE0; --crema:#FAF7F2;
+      --fd:"Fraunces",Georgia,serif; --fb:"Plus Jakarta Sans",system-ui,sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--fb);background:var(--arena);color:var(--tostado);-webkit-font-smoothing:antialiased;cursor:none;overflow-x:hidden}
+    /* CURSOR */
+    .cdot{width:8px;height:8px;background:var(--terra);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+    .cring{width:38px;height:38px;border:1.5px solid var(--terra);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.4;transition:width .25s,height .25s,opacity .2s}
+    body.hl .cdot{width:14px;height:14px}
+    body.hl .cring{width:54px;height:54px;opacity:.2}
+    /* NAV */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;transition:background .3s,box-shadow .3s}
+    .nav.solid{background:rgba(240,234,224,.93);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(74,56,40,.08)}
+    .nav-logo{text-decoration:none;line-height:1;display:flex;flex-direction:column;gap:1px}
+    .nav-logo .l1{font-family:var(--fd);font-size:21px;font-weight:300;letter-spacing:.01em;color:var(--tostado);display:block}
+    .nav-logo .l2{font-family:var(--fd);font-size:11px;font-weight:300;font-style:italic;letter-spacing:.01em;color:var(--terra);display:block}
+    .nav-spiral{flex-shrink:0;display:block;transition:opacity .4s}
+    .burger{background:none;border:none;cursor:pointer;padding:4px;display:flex;flex-direction:column;gap:5px;z-index:201}
+    .burger span{display:block;width:24px;height:1.5px;background:var(--tostado);transition:all .35s;transform-origin:center}
+    .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .burger.open span{background:var(--arena)}
+    /* MENU OVERLAY */
+    .menu-overlay{position:fixed;inset:0;z-index:199;background:var(--tostado);display:flex;flex-direction:column;justify-content:center;padding:80px 48px;opacity:0;pointer-events:none;transition:opacity .4s}
+    .menu-overlay.open{opacity:1;pointer-events:all}
+    .menu-nav{list-style:none;display:flex;flex-direction:column;gap:0}
+    .menu-nav li{border-bottom:.5px solid rgba(240,234,224,.1)}
+    .menu-nav a{font-family:var(--fd);font-size:clamp(36px,6vw,72px);font-weight:300;color:var(--arena);text-decoration:none;display:block;padding:18px 0;transition:color .2s,padding-left .25s;letter-spacing:-.01em}
+    .menu-nav a:hover{color:var(--terra);padding-left:16px}
+    .menu-footer{position:absolute;bottom:48px;left:48px;right:48px;display:flex;align-items:flex-end;justify-content:space-between}
+    .menu-tagline{font-family:var(--fd);font-size:13px;font-weight:300;font-style:italic;color:rgba(240,234,224,.4)}
+    .menu-social{display:flex;gap:20px}
+    .menu-social a{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(240,234,224,.4);text-decoration:none;transition:color .2s}
+    .menu-social a:hover{color:var(--terra)}
+    /* FOOTER */
+    .footer{background:var(--tostado);padding:44px 48px;border-top:.5px solid rgba(240,234,224,.1)}
+    .fin2{display:flex;align-items:center;justify-content:space-between;max-width:1120px;margin:0 auto}
+    .footer-logo{text-decoration:none;line-height:1;display:flex;flex-direction:column;gap:1px}
+    .footer-logo .l1{font-family:var(--fd);font-size:19px;font-weight:300;letter-spacing:.01em;color:var(--arena);display:block}
+    .footer-logo .l2{font-family:var(--fd);font-size:10px;font-weight:300;font-style:italic;letter-spacing:.01em;color:var(--terra);display:block}
+    .flinks{display:flex;gap:24px;list-style:none}
+    .flinks a{font-size:11.5px;color:rgba(240,234,224,.4);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+    .flinks a:hover{color:var(--arena)}
+    .fcopy{font-size:11px;color:rgba(240,234,224,.22)}
+    @media(max-width:768px){
+      body{cursor:auto}
+      .cdot,.cring{display:none}
+      .nav{padding:16px 20px}
+      .menu-overlay{padding:80px 24px}
+      .menu-footer{left:24px;right:24px}
+      .footer{padding:36px 20px}
+      .fin2{flex-direction:column;gap:18px;text-align:center}
+      .flinks{justify-content:center}
+    }
+  </style>
+  <title>el concepto — cota collective</title>
+  <meta name="description" content="La sierra no es escaparse. Es volver a tu cota.">
+  <style>
+    .page{min-height:100vh;background:var(--tostado);display:flex;align-items:center;justify-content:center;padding:120px 80px 80px}
+    .m-in{display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;max-width:920px}
+    .m-tag{font-size:10px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--terra)}
+    .m-q{font-family:var(--fd);font-size:clamp(30px,5vw,62px);font-weight:300;line-height:1.2;color:var(--arena)}
+    .m-q em{font-style:italic;color:var(--terra)}
+    .m-body{font-size:16px;line-height:1.8;color:rgba(240,234,224,.55);max-width:540px}
+    @media(max-width:768px){.page{padding:100px 24px 60px}}
+  </style>
+</head>
+<body>
+<div class="cdot" id="cdot"></div>
+<div class="cring" id="cring"></div>
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menu-overlay">
+  <nav>
+    <ul class="menu-nav">
+      <!-- EDITABLE: links del menú -->
+      <li><a href="/">inicio</a></li>
+      <li><a href="/concepto">el concepto</a></li>
+      <li><a href="/que-es-cota">qué es cota</a></li>
+      <li><a href="/comunidad">la comunidad</a></li>
+    </ul>
+  </nav>
+  <div class="menu-footer">
+    <!-- EDITABLE: tagline y redes -->
+    <span class="menu-tagline">para los que quieren vivir en otra altitud</span>
+    <div class="menu-social">
+      <a href="https://instagram.com/cotacollective" target="_blank">instagram</a>
+      <a href="mailto:hola@cotacollective.es">contacto</a>
+    </div>
+  </div>
+</div>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="/" class="nav-logo" id="nav-wm" style="opacity:0;transition:opacity .4s">
+    <span class="l1">cota</span>
+    <span class="l2">collective</span>
+  </a>
+  <svg id="nav-spiral" class="nav-spiral" style="opacity:1" width="30" height="30" viewBox="-120 -120 240 240" xmlns="http://www.w3.org/2000/svg">
+    <path id="snav" fill="none" stroke="#4A3828" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+  <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main class="page">
+  <div class="m-in">
+    <!-- EDITABLE: etiqueta, cita y texto -->
+    <span class="m-tag">el concepto</span>
+    <blockquote class="m-q">la sierra no es escaparse.<br>es <em>volver a tu cota.</em></blockquote>
+    <p class="m-body">Hay gente que ya eligió vivir diferente. Y hay gente que lleva tiempo pensándolo. Cota Collective existe para los dos: para crear comunidad, dinamizar la vida social en la sierra y apoyar a quienes quieren construir algo aquí.</p>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="fin2">
+    <a href="/" class="footer-logo">
+      <!-- EDITABLE: nombre en el footer -->
+      <span class="l1">cota</span>
+      <span class="l2">collective</span>
+    </a>
+    <ul class="flinks">
+      <!-- EDITABLE: links del footer -->
+      <li><a href="https://instagram.com/cotacollective" target="_blank">instagram</a></li>
+      <li><a href="mailto:hola@cotacollective.es">contacto</a></li>
+    </ul>
+    <!-- EDITABLE: año -->
+    <span class="fcopy">© 2026 cota collective</span>
+  </div>
+</footer>
+<script>
+  // CURSOR
+  const dot=document.getElementById('cdot'),ring=document.getElementById('cring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+  (function aR(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(aR)})();
+  document.querySelectorAll('a,button,.pillar').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hl'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hl'));
+  });
+  // NAV solid on scroll
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>50),{passive:true});
+  // MENÚ
+  const burger=document.getElementById('burger'),overlay=document.getElementById('menu-overlay');
+  function toggleMenu(){const o=overlay.classList.toggle('open');burger.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){overlay.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';}});
+</script>
+<script>
+  function sp(turns,r0,r1,pts){return Array.from({length:pts+1},(_,i)=>{const t=i/pts,a=t*turns*2*Math.PI-Math.PI/2,r=r0+(r1-r0)*t;return(i?'L':'M')+(r*Math.cos(a)).toFixed(2)+','+(r*Math.sin(a)).toFixed(2)}).join(' ')}
+  document.getElementById('snav').setAttribute('d',sp(4.5,2,36,300));
+</script>
+</body>
+</html>
